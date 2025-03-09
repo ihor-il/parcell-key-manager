@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">parcell-key-manager</string>
+    <string name="title_activity_main">parcell-key-manager</string>
+    <string name="package_name">com.ihorlupyna.parcell</string>
+    <string name="custom_url_scheme">com.ihorlupyna.parcell</string>
+</resources>
