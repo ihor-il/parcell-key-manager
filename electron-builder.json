@@ -1,0 +1,27 @@
+{
+  "appId": "com.ihorlupyna.parcell",
+  "asar": true,
+  "files": [
+    "package.json",
+    {
+      "from": "./dist/parcell-key-manager/browser",
+      "to": "app",
+      "filter": [
+        "**/*"
+      ]
+    },
+    {
+      "from": "./electron",
+      "to": "./",
+      "filter": [
+        "index.js"
+      ]
+    }
+  ],
+  "directories": {
+    "output": "./dist/electron"
+  },
+  "win": {
+    "target": "nsis"
+  }
+}

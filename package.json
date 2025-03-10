@@ -2,11 +2,11 @@
   "name": "parcell-key-manager",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build": "ng build && npm run capacitor:sync",
+    "electron:run": "npm run build && electron ./electron/dev.js",
+    "electron:build": "npm run build && electron-builder -c ./electron-builder.json",
+    "capacitor:sync": "cap sync"
   },
   "private": true,
   "dependencies": {
@@ -36,7 +36,9 @@
     "@angular/compiler-cli": "^19.2.0",
     "@angular/localize": "^19.2.0",
     "@capacitor/cli": "latest",
+    "@electron/asar": "^3.3.1",
     "@types/jasmine": "~5.1.0",
+    "electron-builder": "^25.1.8",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
