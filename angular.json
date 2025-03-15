@@ -75,6 +75,14 @@
                         "with": "src/app/platforms/web/app.config.web.ts"
                     }
                 ]
+            },
+            "windows": {
+                "fileReplacements": [
+                    {
+                        "replace": "src/app/app.config.ts",
+                        "with": "src/app/platforms/web/app.config.web.ts"
+                    }
+                ]
             }
           },
           "defaultConfiguration": "production"
