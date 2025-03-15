@@ -1,5 +1,8 @@
-<app-top-bar></app-top-bar>
+<app-top-bar [pageActions]="pageActions" [title]="title"></app-top-bar>
 <div class="content">
-    <router-outlet (activate)="onRouterOutletActivate($event)"></router-outlet>
+    <router-outlet
+        (activate)="onRouterOutletActivate($event)"
+        (deactivate)="onRouterOutletDeactivate()"
+    ></router-outlet>
 </div>
 <app-bottom-bar></app-bottom-bar>

@@ -1,3 +1,9 @@
 <mat-toolbar class="app-navbar primary">
-    <span>ParCell Key Manager</span>
+    <span>{{ title }}</span>
+    <div class="spacer"></div>
+    @for (action of pageActions; track $index) {
+        <button mat-icon-button (click)="action.callback()">
+            <mat-icon>{{ action.icon }}</mat-icon>
+        </button>
+    }
 </mat-toolbar>

@@ -1,19 +1,16 @@
-import {
-    checkDiscriminator,
-    InterfaceWithDiscriminator,
-} from './interface.helpers';
-
-export interface PageWithActions extends InterfaceWithDiscriminator {
-    discriminator: 'PageWithActions';
-    getActions(): PageAction[];
-}
+import { Observable, Subject } from 'rxjs';
 
 export interface PageAction {
     icon: string;
-    tooltip?: string;
     callback: () => void;
 }
 
-export function instanceOfPageWithActions(obj: any) {
-    return checkDiscriminator(obj, 'PageWithActions');
+export abstract class Page {
+    protected _actionsUpdated = new Subject<PageAction[]>();
+    public get actionsUpdated$(): Observable<PageAction[]> {
+        return this._actionsUpdated;
+    }
+
+    abstract get title(): string;
+    abstract get actions(): PageAction[];
 }
