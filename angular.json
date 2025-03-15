@@ -67,6 +67,14 @@
                     }
                 ],
                 "optimization": false
+            },
+            "android": {
+                "fileReplacements": [
+                    {
+                        "replace": "src/app/app.config.ts",
+                        "with": "src/app/platforms/web/app.config.web.ts"
+                    }
+                ]
             }
           },
           "defaultConfiguration": "production"

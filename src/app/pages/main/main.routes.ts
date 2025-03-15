@@ -11,8 +11,8 @@ export const mainRoutes: Routes = [
     {
         path: 'passwords',
         loadComponent: () =>
-            import('app/pages/passwords/passwords.component').then(
-                (m) => m.PasswordsComponent
+            import('app/pages/passwords/passwords.page.component').then(
+                (m) => m.PasswordsPageComponent
             ),
     },
     {
