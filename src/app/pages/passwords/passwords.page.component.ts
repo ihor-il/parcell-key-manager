@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { groupByFn } from 'app/helpers/array.helpers';
+import { PageAction, PageWithActions } from 'app/helpers/page.helpers';
 import { Dictionary } from 'app/helpers/type.helpers';
 import { PasswordListItem } from 'app/model/password-list-item.model';
 import {
@@ -16,12 +17,19 @@ import { EMPTY, map, Observable } from 'rxjs';
     templateUrl: './passwords.page.component.html',
     styleUrl: './passwords.page.component.scss',
 })
-export class PasswordsPageComponent implements OnInit {
+export class PasswordsPageComponent implements OnInit, PageWithActions {
+    discriminator = 'PageWithActions' as const;
+
     passwords: Observable<Dictionary<PasswordListItem>> = EMPTY;
 
     constructor(
-        @Inject(PASSWORD_SERVICE) private passwordService: IPasswordService
-    ) {}
+        @Inject(PASSWORD_SERVICE) private passwordService: IPasswordService,
+    ) { }
+
+
+    getActions(): PageAction[] {
+        return [{ icon: 'add', callback: () => console.log('add') }];
+    }
 
     ngOnInit(): void {
         this.passwords = this.passwordService.getPasswords().pipe(
@@ -29,9 +37,9 @@ export class PasswordsPageComponent implements OnInit {
                 arr.map((item) => ({
                     ...item,
                     url: item.url.replace('https://', ''),
-                }))
+                })),
             ),
-            map((arr) => groupByFn(arr, (item) => item.url[0].toUpperCase()))
+            map((arr) => groupByFn(arr, (item) => item.url[0].toUpperCase())),
         );
     }
 }

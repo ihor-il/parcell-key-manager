@@ -5,7 +5,7 @@ export const routes: Routes = [
     {
         path: 'app',
         loadComponent: () =>
-            import('app/pages/main/main.component').then((m) => m.MainComponent),
+            import('app/pages/main/main.page.component').then((m) => m.MainPageComponent),
         children: mainRoutes
     },
     {
