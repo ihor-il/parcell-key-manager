@@ -22,4 +22,9 @@ export const mainRoutes: Routes = [
                 (m) => m.SettingsComponent
             ),
     },
+    {
+        path: '',
+        redirectTo: 'passwords',
+        pathMatch: 'full'
+    }
 ];

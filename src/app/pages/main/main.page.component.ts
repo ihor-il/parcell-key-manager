@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Page, PageAction } from 'app/helpers/page.helpers';
 import { Unsubscribable } from 'rxjs';
@@ -9,11 +9,16 @@ import { TopBarComponent } from '../../components/top-bar/top-bar.component';
     imports: [TopBarComponent, BottomBarComponent, RouterOutlet],
     templateUrl: './main.page.component.html',
     styleUrl: './main.page.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainPageComponent {
     private _updateActionsSubscription: Unsubscribable | undefined;
     private _pageActions: PageAction[] = [];
     private _title: string = '';
+
+    constructor(private changeDetectorRef: ChangeDetectorRef) {
+
+    }
 
     public get pageActions(): PageAction[] {
         return this._pageActions;
@@ -45,5 +50,7 @@ export class MainPageComponent {
         this._updateActionsSubscription = page.actionsUpdated$.subscribe(
             (actions) => (this._pageActions = actions),
         );
+
+        this.changeDetectorRef.detectChanges();
     }
 }

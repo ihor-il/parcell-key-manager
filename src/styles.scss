@@ -1,4 +1,14 @@
+@use '@angular/material' as mat;
 @import "bootstrap/scss/bootstrap";
+
+html {
+    // color-scheme: light;
+    // @include mat.theme((
+    //   color: mat.$green-palette,
+    //   typography: Roboto,
+    //   density: 0
+    // ));
+}
 
 html,
 body {
