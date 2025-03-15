@@ -1,0 +1,11 @@
+@import '../../styles/navbar.scss';
+@import '../../styles/theme.scss';
+
+:host {
+    width: 100%;
+}
+
+.app-navbar {
+    display: flex;
+    justify-content: space-around;
+}

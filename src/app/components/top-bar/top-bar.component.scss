@@ -1,0 +1,7 @@
+@import '../../styles/navbar.scss';
+@import '../../styles/theme.scss';
+
+:host {
+    width: 100%;
+    background: var(--mat-sys-primary);
+}
