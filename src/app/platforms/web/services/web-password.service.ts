@@ -9,7 +9,7 @@ export class PasswordService implements IPasswordService {
     constructor() {}
 
     getPasswords(): Observable<PasswordListItem[]> {
-        const passwords = Array.from({ length: 10 }, () => ({
+        const passwords = Array.from({ length: 50 }, () => ({
             url: faker.internet.url({ protocol: undefined }),
             username: faker.internet.username(),
         }));

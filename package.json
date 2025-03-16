@@ -25,6 +25,7 @@
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "capacitor-plugin-safe-area": "^4.0.0",
     "crypto-js": "^4.2.0",
     "dexie": "^4.0.11",
     "ngx-electron": "^2.2.0",
