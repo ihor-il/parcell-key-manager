@@ -4,7 +4,7 @@ export const mainRoutes: Routes = [
     {
         path: '2fa',
         loadComponent: () =>
-            import('app/pages/two-factor-auth/two-factor-auth.component').then(
+            import('app/pages/two-factor-auth/two-factor-auth.page.component').then(
                 (m) => m.TwoFactorAuthComponent
             ),
     },
@@ -18,7 +18,7 @@ export const mainRoutes: Routes = [
     {
         path: 'settings',
         loadComponent: () =>
-            import('app/pages/settings/settings.component').then(
+            import('app/pages/settings/settings.page.component').then(
                 (m) => m.SettingsComponent
             ),
     },
