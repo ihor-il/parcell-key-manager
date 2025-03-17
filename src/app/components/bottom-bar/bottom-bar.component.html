@@ -1,11 +1,7 @@
 <mat-toolbar class="app-navbar primary-container">
-    <button mat-icon-button routerLink="2fa">
-        <mat-icon>lock</mat-icon>
-    </button>
-    <button mat-icon-button routerLink="passwords">
-        <mat-icon>password</mat-icon>
-    </button>
-    <button mat-icon-button routerLink="settings">
-        <mat-icon>settings</mat-icon>
-    </button>
+    @for (item of config | keyvalue; track $index) {
+        <div [routerLink]="item.key" routerLinkActive #rla="routerLinkActive" class="wrapper">
+            <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">{{ item.value }}</mat-icon>
+        </div>
+    }
 </mat-toolbar>
