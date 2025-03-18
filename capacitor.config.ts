@@ -1,5 +1,3 @@
-/// <reference types="@capacitor-community/safe-area" />
-
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -10,7 +8,12 @@ const config: CapacitorConfig = {
     plugins: {
         SafeArea: {
             enabled: true,
-            customColorsForSystemBars: false
+            customColorsForSystemBars: false,
+        },
+        CapacitorSQLite: {
+            androidIsEncryption: true,
+            electronIsEncryption: true,
+            electronWindowsLocation: 'C:\\ProgramData\\CapacitorDatabases',
         },
     },
 };
