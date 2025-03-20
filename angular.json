@@ -58,31 +58,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
-            },
-            "web": {
-                "fileReplacements": [
-                    {
-                        "replace": "src/app/app.config.ts",
-                        "with": "src/app/platforms/web/app.config.web.ts"
-                    }
-                ],
-                "optimization": false
-            },
-            "android": {
-                "fileReplacements": [
-                    {
-                        "replace": "src/app/app.config.ts",
-                        "with": "src/app/platforms/web/app.config.web.ts"
-                    }
-                ]
-            },
-            "windows": {
-                "fileReplacements": [
-                    {
-                        "replace": "src/app/app.config.ts",
-                        "with": "src/app/platforms/web/app.config.web.ts"
-                    }
-                ]
             }
           },
           "defaultConfiguration": "production"
@@ -95,9 +70,6 @@
             },
             "development": {
               "buildTarget": "parcell-key-manager:build:development"
-            },
-            "web": {
-              "buildTarget": "parcell-key-manager:build:web"
             }
           },
           "defaultConfiguration": "development"
