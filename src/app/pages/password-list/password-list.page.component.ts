@@ -1,20 +1,34 @@
 import { AsyncPipe, KeyValuePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { groupByFn } from 'app/helpers/array.helpers';
 import { Page, PageAction } from 'app/helpers/page.helpers';
 import { Dictionary } from 'app/helpers/type.helpers';
-import { PasswordListItem } from 'app/model/password-list-item.model';
+import { PasswordListItem } from 'app/model/password.model';
 import {
     IPasswordService,
     PASSWORD_SERVICE,
-} from 'app/services/password.service';
-import { combineLatest, EMPTY, map, Observable, share, shareReplay, startWith, tap } from 'rxjs';
+} from 'app/services/abstract/password.service';
+import {
+    combineLatest,
+    EMPTY,
+    from,
+    map,
+    Observable,
+    shareReplay,
+    startWith,
+} from 'rxjs';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    MatBottomSheet,
+    MatBottomSheetModule,
+} from '@angular/material/bottom-sheet';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { PasswordPageComponent } from '../password/password.page.component';
 
 @Component({
     imports: [
@@ -25,23 +39,23 @@ import { MatInputModule } from '@angular/material/input';
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
+        RouterModule,
+        MatBottomSheetModule,
     ],
-    templateUrl: './passwords.page.component.html',
-    styleUrl: './passwords.page.component.scss',
+    templateUrl: './password-list.page.component.html',
+    styleUrl: './password-list.page.component.scss',
 })
-export class PasswordsPageComponent extends Page implements OnInit {
+export class PasswordListPageComponent extends Page implements OnInit {
+    private _bottomSheet = inject(MatBottomSheet);
+    private readonly _router = inject(Router);
+    private readonly _route = inject(ActivatedRoute);
+
     title = 'Passwords' as const;
     isSearchVisible: boolean = false;
 
     passwords: Observable<Dictionary<PasswordListItem>> = EMPTY;
     isAnyItemVisible: Observable<boolean> = EMPTY;
     searchControl = new FormControl<string>('');
-
-    constructor(
-        @Inject(PASSWORD_SERVICE) private passwordService: IPasswordService,
-    ) {
-        super();
-    }
 
     get actions(): PageAction[] {
         return [
@@ -51,6 +65,12 @@ export class PasswordsPageComponent extends Page implements OnInit {
                 callback: () => this._toggleSearch(),
             },
         ];
+    }
+
+    constructor(
+        @Inject(PASSWORD_SERVICE) private passwordService: IPasswordService,
+    ) {
+        super();
     }
 
     ngOnInit(): void {
@@ -69,14 +89,25 @@ export class PasswordsPageComponent extends Page implements OnInit {
         );
     }
 
-    openPasswordDialog(password: PasswordListItem) {}
+    openPasswordPage(password: PasswordListItem) {
+        this._bottomSheet.open(PasswordPageComponent, {
+            closeOnNavigation: true,
+            data: { id: password.id },
+            autoFocus: 'dialog',
+        });
+    }
 
     private _toggleSearch() {
         this.isSearchVisible = !this.isSearchVisible;
         this._actionsUpdated.next(this.actions);
     }
 
-    private _add() {}
+    private _add() {
+        this._bottomSheet.open(PasswordPageComponent, {
+            closeOnNavigation: true,
+            autoFocus: 'dialog',
+        });
+    }
 
     private _mapPasswords(items: PasswordListItem[]): PasswordListItem[] {
         return items.map((item) => ({
