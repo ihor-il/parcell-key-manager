@@ -13,11 +13,10 @@ import {
 import {
     combineLatest,
     EMPTY,
-    from,
     map,
     Observable,
     shareReplay,
-    startWith,
+    startWith
 } from 'rxjs';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +26,7 @@ import {
 } from '@angular/material/bottom-sheet';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { PasswordPageComponent } from '../password/password.page.component';
 
 @Component({
@@ -47,8 +46,6 @@ import { PasswordPageComponent } from '../password/password.page.component';
 })
 export class PasswordListPageComponent extends Page implements OnInit {
     private _bottomSheet = inject(MatBottomSheet);
-    private readonly _router = inject(Router);
-    private readonly _route = inject(ActivatedRoute);
 
     title = 'Passwords' as const;
     isSearchVisible: boolean = false;
