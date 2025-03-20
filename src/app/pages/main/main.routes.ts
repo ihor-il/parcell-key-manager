@@ -4,9 +4,9 @@ export const mainRoutes: Routes = [
     {
         path: '2fa',
         loadComponent: () =>
-            import('app/pages/two-factor-auth/two-factor-auth.page.component').then(
-                (m) => m.TwoFactorAuthComponent
-            ),
+            import(
+                'app/pages/two-factor-auth/two-factor-auth.page.component'
+            ).then((m) => m.TwoFactorAuthComponent),
     },
     {
         path: 'passwords',
@@ -19,12 +19,12 @@ export const mainRoutes: Routes = [
         path: 'settings',
         loadComponent: () =>
             import('app/pages/settings/settings.page.component').then(
-                (m) => m.SettingsComponent
+                (m) => m.SettingsComponent,
             ),
     },
     {
         path: '',
         redirectTo: 'passwords',
-        pathMatch: 'full'
-    }
+        pathMatch: 'full',
+    },
 ];
