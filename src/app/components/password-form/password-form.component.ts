@@ -13,7 +13,7 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import {
     MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -40,10 +40,12 @@ import validator from 'validator';
             provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
             useValue: { appearance: 'outline' },
         },
+        PasswordService
     ],
 })
 export class PasswordPageComponent {
     private readonly _destroyRef = inject(DestroyRef);
+    private readonly _bottomSheetRef = inject(MatBottomSheetRef);
 
     private _id: string = '';
 
@@ -109,7 +111,7 @@ export class PasswordPageComponent {
             this.isEditMode
                 ? this.passwordService.updatePassword(model)
                 : this.passwordService.createPassword(model),
-        ).subscribe();
+        ).subscribe(() => this._bottomSheetRef.dismiss());
     }
 
     deletePassword() {}

@@ -1,5 +1,5 @@
 import { AsyncPipe, KeyValuePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { groupByFn } from 'app/helpers/array.helpers';
@@ -12,9 +12,12 @@ import {
     map,
     Observable,
     shareReplay,
-    startWith
+    startWith,
+    Subject,
+    switchMap,
 } from 'rxjs';
 
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
     MatBottomSheet,
@@ -38,11 +41,14 @@ import { PasswordPageComponent } from '../../components/password-form/password-f
         RouterModule,
         MatBottomSheetModule,
     ],
+    providers: [PasswordService],
     templateUrl: './password-list.page.component.html',
     styleUrl: './password-list.page.component.scss',
 })
 export class PasswordListPageComponent extends Page implements OnInit {
     private _bottomSheet = inject(MatBottomSheet);
+    private _destroyRef = inject(DestroyRef);
+    private readonly _reload = new Subject<void>();
 
     title = 'Passwords' as const;
     isSearchVisible: boolean = false;
@@ -61,15 +67,16 @@ export class PasswordListPageComponent extends Page implements OnInit {
         ];
     }
 
-    constructor(
-        private passwordService: PasswordService,
-    ) {
+    constructor(private passwordService: PasswordService) {
         super();
     }
 
     ngOnInit(): void {
         this.passwords = combineLatest([
-            this.passwordService.getPasswords(),
+            this._reload.pipe(
+                startWith(void 0),
+                switchMap(() => this.passwordService.getPasswords()),
+            ),
             this.searchControl.valueChanges.pipe(startWith('')),
         ]).pipe(
             shareReplay(),
@@ -84,11 +91,15 @@ export class PasswordListPageComponent extends Page implements OnInit {
     }
 
     openPasswordPage(password: PasswordListItem) {
-        this._bottomSheet.open(PasswordPageComponent, {
-            closeOnNavigation: true,
-            data: { id: password.id },
-            autoFocus: 'dialog',
-        });
+        this._bottomSheet
+            .open(PasswordPageComponent, {
+                closeOnNavigation: true,
+                data: { id: password.id },
+                autoFocus: 'dialog',
+            })
+            .afterDismissed()
+            .pipe(takeUntilDestroyed(this._destroyRef))
+            .subscribe(() => this._reload.next());
     }
 
     private _toggleSearch() {
@@ -97,10 +108,14 @@ export class PasswordListPageComponent extends Page implements OnInit {
     }
 
     private _add() {
-        this._bottomSheet.open(PasswordPageComponent, {
-            closeOnNavigation: true,
-            autoFocus: 'dialog',
-        });
+        this._bottomSheet
+            .open(PasswordPageComponent, {
+                closeOnNavigation: true,
+                autoFocus: 'dialog',
+            })
+            .afterDismissed()
+            .pipe(takeUntilDestroyed(this._destroyRef))
+            .subscribe(() => this._reload.next());
     }
 
     private _mapPasswords(items: PasswordListItem[]): PasswordListItem[] {
