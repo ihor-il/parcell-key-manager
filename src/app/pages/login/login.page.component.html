@@ -1,7 +1,6 @@
 <h2>Parcell Key Manager</h2>
 @switch (isBiometricAvaliable$ | async) {
     @case (true) {
-        <h4>Please authorize</h4>
         <button mat-flat-button (click)="verifyIdentity()">Authorize</button>
     }
     @case (false) {
