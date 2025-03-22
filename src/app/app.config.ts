@@ -5,9 +5,8 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { DbnameVersionService } from './services/dbname-version.service';
+import { DatabaseService } from './services/database.service';
 import { InitializeAppService } from './services/initialize.app.service';
-import { PasswordService } from './services/password.service';
 import { SQLiteService } from './services/sqlite.service';
 
 export function initializeFactory(init: InitializeAppService) {
@@ -19,15 +18,13 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
         SQLiteService,
-        DbnameVersionService,
         InitializeAppService,
+        DatabaseService,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeFactory,
             deps: [InitializeAppService],
             multi: true,
         },
-
-        PasswordService,
     ],
 };
