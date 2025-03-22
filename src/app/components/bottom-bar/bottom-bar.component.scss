@@ -17,10 +17,5 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
-        &:hover,
-        &.active-route {
-            backdrop-filter: brightness(0.8);
-        }
     }
 }

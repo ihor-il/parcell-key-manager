@@ -8,11 +8,9 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-    FormBuilder,
     FormControl,
     FormGroup,
     ReactiveFormsModule,
-    ValidatorFn,
     Validators,
 } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
@@ -23,11 +21,7 @@ import {
 } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-    IPasswordService,
-    PASSWORD_SERVICE,
-} from 'app/services/abstract/password.service';
+import { PasswordService } from 'app/services/password.service';
 import { filter, from } from 'rxjs';
 import validator from 'validator';
 
@@ -39,8 +33,8 @@ import validator from 'validator';
         MatButtonModule,
         MatIconModule,
     ],
-    templateUrl: './password.page.component.html',
-    styleUrl: './password.page.component.scss',
+    templateUrl: './password-form.component.html',
+    styleUrl: './password-form.component.scss',
     providers: [
         {
             provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -49,10 +43,7 @@ import validator from 'validator';
     ],
 })
 export class PasswordPageComponent {
-    private readonly _fb = inject(FormBuilder);
     private readonly _destroyRef = inject(DestroyRef);
-    private readonly _router = inject(Router);
-    private readonly _route = inject(ActivatedRoute);
 
     private _id: string = '';
 
@@ -67,17 +58,19 @@ export class PasswordPageComponent {
             nonNullable: true,
         }),
         username: new FormControl('', {
-            validators: [Validators.required, Validators.pattern('\S*')],
+            validators: [Validators.required],
             nonNullable: true,
         }),
         password: new FormControl('', {
-            validators: [Validators.required, Validators.pattern('\S*')],
+            validators: [Validators.required],
             nonNullable: true,
         }),
     });
 
     @Input() set id(passwordId: string) {
         this._id = passwordId;
+        if (!passwordId) return;
+
         from(this.passwordService.getPassword(passwordId))
             .pipe(
                 takeUntilDestroyed(this._destroyRef),
@@ -94,7 +87,7 @@ export class PasswordPageComponent {
     }
 
     constructor(
-        @Inject(PASSWORD_SERVICE) private passwordService: IPasswordService,
+        private passwordService: PasswordService,
         @Inject(MAT_BOTTOM_SHEET_DATA) data?: { id: string },
     ) {
         this.id = data?.id ?? '';

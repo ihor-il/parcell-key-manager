@@ -8,5 +8,11 @@ project(':capacitor-community-sqlite').projectDir = new File('../node_modules/@c
 include ':capacitor-keyboard'
 project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor/keyboard/android')
 
+include ':capacitor-toast'
+project(':capacitor-toast').projectDir = new File('../node_modules/@capacitor/toast/android')
+
+include ':capacitor-native-biometric'
+project(':capacitor-native-biometric').projectDir = new File('../node_modules/capacitor-native-biometric/android')
+
 include ':capacitor-plugin-safe-area'
 project(':capacitor-plugin-safe-area').projectDir = new File('../node_modules/capacitor-plugin-safe-area/android')

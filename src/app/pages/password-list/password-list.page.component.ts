@@ -1,15 +1,11 @@
 import { AsyncPipe, KeyValuePipe } from '@angular/common';
-import { Component, inject, Inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { groupByFn } from 'app/helpers/array.helpers';
 import { Page, PageAction } from 'app/helpers/page.helpers';
 import { Dictionary } from 'app/helpers/type.helpers';
 import { PasswordListItem } from 'app/model/password.model';
-import {
-    IPasswordService,
-    PASSWORD_SERVICE,
-} from 'app/services/abstract/password.service';
 import {
     combineLatest,
     EMPTY,
@@ -27,7 +23,8 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
-import { PasswordPageComponent } from '../password/password.page.component';
+import { PasswordService } from 'app/services/password.service';
+import { PasswordPageComponent } from '../../components/password-form/password-form.component';
 
 @Component({
     imports: [
@@ -65,7 +62,7 @@ export class PasswordListPageComponent extends Page implements OnInit {
     }
 
     constructor(
-        @Inject(PASSWORD_SERVICE) private passwordService: IPasswordService,
+        private passwordService: PasswordService,
     ) {
         super();
     }
