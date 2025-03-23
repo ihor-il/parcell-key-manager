@@ -5,6 +5,7 @@ import {
     Inject,
     Input,
     signal,
+    TemplateRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -13,8 +14,12 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import {
+    MAT_BOTTOM_SHEET_DATA,
+    MatBottomSheetRef,
+} from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
     MAT_FORM_FIELD_DEFAULT_OPTIONS,
     MatFormFieldModule,
@@ -22,7 +27,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { PasswordService } from 'app/services/password.service';
-import { filter, from } from 'rxjs';
+import { filter, from, mergeMap } from 'rxjs';
 import validator from 'validator';
 
 @Component({
@@ -32,6 +37,7 @@ import validator from 'validator';
         MatInputModule,
         MatButtonModule,
         MatIconModule,
+        MatDialogModule,
     ],
     templateUrl: './password-form.component.html',
     styleUrl: './password-form.component.scss',
@@ -40,12 +46,13 @@ import validator from 'validator';
             provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
             useValue: { appearance: 'outline' },
         },
-        PasswordService
+        PasswordService,
     ],
 })
 export class PasswordPageComponent {
     private readonly _destroyRef = inject(DestroyRef);
     private readonly _bottomSheetRef = inject(MatBottomSheetRef);
+    private readonly _matDialog = inject(MatDialog);
 
     private _id: string = '';
 
@@ -114,5 +121,15 @@ export class PasswordPageComponent {
         ).subscribe(() => this._bottomSheetRef.dismiss());
     }
 
-    deletePassword() {}
+    deletePassword(templateRef: TemplateRef<any>) {
+        this._matDialog
+            .open<any, any, boolean>(templateRef)
+            .afterClosed()
+            .pipe(
+                takeUntilDestroyed(this._destroyRef),
+                filter((result) => !!result),
+                mergeMap(() => this.passwordService.deletePassword(this._id)),
+            )
+            .subscribe(() => this._bottomSheetRef.dismiss(true));
+    }
 }

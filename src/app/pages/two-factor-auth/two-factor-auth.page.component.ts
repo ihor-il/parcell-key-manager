@@ -52,10 +52,6 @@ export class TwoFactorAuthComponent extends Page implements OnInit {
             icon: 'add',
             callback: () => this.add2faCode(),
         },
-        {
-            icon: 'refresh',
-            callback: () => this._reload.next(),
-        },
     ];
 
     ngOnInit(): void {
@@ -97,7 +93,10 @@ export class TwoFactorAuthComponent extends Page implements OnInit {
                 data: { id },
             })
             .afterDismissed()
-            .pipe(takeUntilDestroyed(this._destroyRef))
+            .pipe(
+                takeUntilDestroyed(this._destroyRef),
+                filter((result) => !!result),
+            )
             .subscribe(() => this._reload.next());
     }
 

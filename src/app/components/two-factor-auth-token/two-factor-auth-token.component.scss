@@ -1,15 +1,9 @@
+@use 'app/styles/header-bar.scss';
+
 :host {
     display: block;
     padding: 16px 8px;
     padding-bottom: var(--safe-area-inset-bottom);
-}
-
-.header {
-    margin-bottom: 16px;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
 }
 
 ::ng-deep .mdc-linear-progress__bar.mdc-linear-progress__primary-bar {

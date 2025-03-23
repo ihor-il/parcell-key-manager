@@ -1,7 +1,13 @@
 <ng-container *ngIf="model$ | async as model">
-    <p>{{ model.issuer }}</p>
-    <p>{{ model.account }}</p>
-    <p>{{ token$ | async }}</p>
+    <div class="header">
+        <h2>{{ model.issuer }}</h2>
+        <div class="spacer"></div>
+        <button mat-icon-button (click)="deleteToken(dialogTemplate)">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+    <span>{{ model.account }}</span>
+    <h3>{{ token$ | async }}</h3>
     <ng-container
         *ngTemplateOutlet="
             progressBarTemplate;
@@ -15,4 +21,15 @@
         [ngClass]="{ 'disable-transition': value < .25 || value > 99.75}"
         [value]="value"
     ></mat-progress-bar>
+</ng-template>
+
+<ng-template #dialogTemplate>
+    <h2 mat-dialog-title>Delete authorization token?</h2>
+    <mat-dialog-content>
+        You will need to setup 2FA again using your token provider
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button [mat-dialog-close]="true">Delete</button>
+      </mat-dialog-actions>
 </ng-template>
