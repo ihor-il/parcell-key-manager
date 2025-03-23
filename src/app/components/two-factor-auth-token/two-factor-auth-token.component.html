@@ -1,0 +1,18 @@
+<ng-container *ngIf="model$ | async as model">
+    <p>{{ model.issuer }}</p>
+    <p>{{ model.account }}</p>
+    <p>{{ token$ | async }}</p>
+    <ng-container
+        *ngTemplateOutlet="
+            progressBarTemplate;
+            context: { value: progressBarValue$ | async }
+        "
+    ></ng-container>
+</ng-container>
+
+<ng-template #progressBarTemplate let-value="value">
+    <mat-progress-bar
+        [ngClass]="{ 'disable-transition': value < .25 || value > 99.75}"
+        [value]="value"
+    ></mat-progress-bar>
+</ng-template>

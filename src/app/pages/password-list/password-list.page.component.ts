@@ -46,6 +46,7 @@ import { PasswordPageComponent } from '../../components/password-form/password-f
     styleUrl: './password-list.page.component.scss',
 })
 export class PasswordListPageComponent extends Page implements OnInit {
+    private passwordService = inject(PasswordService);
     private _bottomSheet = inject(MatBottomSheet);
     private _destroyRef = inject(DestroyRef);
     private readonly _reload = new Subject<void>();
@@ -65,10 +66,6 @@ export class PasswordListPageComponent extends Page implements OnInit {
                 callback: () => this._toggleSearch(),
             },
         ];
-    }
-
-    constructor(private passwordService: PasswordService) {
-        super();
     }
 
     ngOnInit(): void {

@@ -1,16 +1,13 @@
 import { DOCUMENT } from '@angular/common';
-import {
-    Component,
-    DestroyRef,
-    inject,
-    OnInit
-} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, NgZone } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { PluginListenerHandle } from '@capacitor/core';
 import { Keyboard } from '@capacitor/keyboard';
 import { SafeArea, SafeAreaInsets } from 'capacitor-plugin-safe-area';
 import { from } from 'rxjs';
+import { Router } from '@angular/router';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 
 @Component({
     selector: 'app-root',
@@ -21,10 +18,16 @@ import { from } from 'rxjs';
 export class AppComponent implements OnInit {
     private _destroyRef = inject(DestroyRef);
     private _document = inject(DOCUMENT);
+    private _zone = inject(NgZone);
+    private _router = inject(Router);
 
     private _insets: SafeAreaInsets = {
         insets: { top: 0, bottom: 0, left: 0, right: 0 },
     };
+
+    constructor() {
+        this._initializeAppLinks();
+    }
 
     ngOnInit(): void {
         this._registerSafeAreaListeners();
@@ -92,5 +95,15 @@ export class AppComponent implements OnInit {
             '--safe-area-inset-right',
             `${obj.insets.right}px`,
         );
+    }
+
+    private _initializeAppLinks() {
+        App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+            this._zone.run(() => {
+                this._router.navigate(['app', '2fa'], {
+                    queryParams: { add: event.url },
+                });
+            });
+        });
     }
 }

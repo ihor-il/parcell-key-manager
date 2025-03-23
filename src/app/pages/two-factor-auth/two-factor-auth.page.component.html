@@ -1,1 +1,16 @@
-<p>two-factor-auth works!</p>
+<ng-container *ngIf="tokens$ | async as tokens; else noTokens">
+    <mat-action-list>
+        @for (token of tokens; track $index; let last = $last) {
+            <mat-list-item (click)="showToken(token.id)">
+                <span matListItemTitle>{{ token.issuer }}</span>
+                <span matListItemLine>{{ token.account }}</span>
+            </mat-list-item>
+        }
+    </mat-action-list>
+</ng-container>
+
+<ng-template #noTokens>
+<div class="container">
+    <h4>No added authorization tokens</h4>
+</div>
+</ng-template>
